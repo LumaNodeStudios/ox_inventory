@@ -28,3 +28,32 @@ function client.setPlayerStatus(values)
         playerState:set(name, lib.math.clamp(playerState[name] + value, 0, 100), true)
     end
 end
+
+function client.getHeaderData()
+    local pData = exports.qbx_core:GetPlayerData()
+    if not pData then return end
+
+    local realTime = lib.callback.await('ox_inventory:getRealTime', 500)
+
+    if not realTime then
+        local days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
+        local months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
+        realTime = {
+            day = days[GetClockDayOfWeek() + 1] or "Monday",
+            month = months[GetClockMonth() + 1] or "January",
+            time = ("%02d:%02d"):format(GetClockHours(), GetClockMinutes())
+        }
+    end
+
+    return {
+        name = pData.charinfo.firstname .. " " .. pData.charinfo.lastname,
+        bank = ("$%s"):format(lib.math.groupdigits(pData.money.bank)),
+        day = realTime.day,
+        month = realTime.month,
+        time = realTime.time,
+        job = pData.job.label,
+        jobName = pData.job.name,
+        gang = pData.gang.label,
+        gangName = pData.gang.name
+    }
+end

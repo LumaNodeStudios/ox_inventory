@@ -3,7 +3,7 @@ $textColor: #c1c2c5;
 $mainFont: Roboto;
 
 $secondaryColor: rgba(12, 12, 12, 0.4);
-$secondaryColorHighlight: #33343f;
+$secondaryColorHighlight: #33343F;
 $secondaryColorLight: rgba(0, 0, 0, 0.5);
 $secondaryColorDark: rgba(12, 12, 12, 0.8);
 
@@ -15,9 +15,8 @@ $containerSize: calc(#{$gridRows} * #{$gridSize + 0.22vh} + #{$gridRows} * #{$gr
 
 body {
   margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
@@ -58,34 +57,35 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .context-menu-list {
-  min-width: 200px;
-  background-color: $mainColor;
-  color: $textColor;
-  padding: 4px;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: inset;
-  border-width: 1px;
-  border-radius: 4px;
+  min-width: 180px;
+  background-color: rgba(15, 15, 15, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   outline: none;
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .context-menu-item {
-  padding: 8px;
+  padding: 10px 12px;
   border-radius: 4px;
   background-color: transparent;
   outline: none;
   border: none;
-  color: $textColor;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: $mainFont;
+  font-size: 13px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  &:active {
-    transform: none;
-  }
+  transition: all 0.15s ease;
+
   &:hover {
-    background-color: $secondaryColorHighlight;
+    background-color: rgba(255, 255, 255, 0.06);
+    color: white;
     cursor: pointer;
   }
 }
@@ -94,7 +94,7 @@ input[type='number']::-webkit-outer-spin-button {
   padding-top: 5px;
 }
 
-.tooltip-markdown > p {
+.tooltip-markdown>p {
   margin: 0;
 }
 
@@ -148,6 +148,7 @@ button:active {
     border: none;
     color: #fff;
     background-color: $secondaryColor;
+
     &:focus-within {
       background-color: $secondaryColorDark;
     }
@@ -165,6 +166,7 @@ button:active {
     font-family: $mainFont;
     width: 100%;
     font-weight: 500;
+
     &:hover {
       background-color: $secondaryColorDark;
     }
@@ -207,6 +209,7 @@ button:active {
   align-items: center;
   border-radius: 4px;
   fill: $textColor;
+
   &:hover {
     background-color: $secondaryColorHighlight;
     cursor: pointer;
@@ -240,6 +243,7 @@ button:active {
   fill: white;
   border-radius: 5% !important;
   background-color: $secondaryColor !important;
+
   &:hover {
     background-color: $secondaryColorDark !important;
     cursor: pointer;
@@ -256,16 +260,19 @@ button:active {
 
 // Dialog is used fro useful controls window
 
+
 // inventory grids
 .inventory-grid-wrapper {
   display: flex;
   flex-direction: column;
-  gap: calc($gridGap * 2);
+  gap: calc($gridGap * 0.8);
 }
+
 .inventory-grid-header-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   p {
     font-size: 16px;
   }
@@ -296,14 +303,12 @@ button:active {
 }
 
 .inventory-slot-label-box {
-  background-color: $mainColor;
+  background-color: transparent;
   color: $textColor;
   text-align: center;
   border-bottom-left-radius: 0.25vh;
   border-bottom-right-radius: 0.25vh;
-  border-top-color: rgba(0, 0, 0, 0.2);
-  border-top-style: inset;
-  border-top-width: 1px;
+  border-top: none;
 }
 
 .inventory-slot-label-text {
@@ -333,6 +338,7 @@ button:active {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+
   p {
     font-size: 12px;
   }
@@ -355,8 +361,10 @@ button:active {
   align-self: flex-end;
   padding: 3px;
   gap: 3px;
+
   p {
-    font-size: 12px;
+    font-size: 10px;
+    opacity: 0.8;
   }
 }
 
@@ -366,6 +374,7 @@ button:active {
   justify-content: flex-end;
   align-items: center;
   padding-right: 3px;
+
   p {
     font-size: 14px;
     text-shadow: 0.1vh 0.1vh 0 rgba(0, 0, 0, 0.7);
@@ -377,26 +386,28 @@ button:active {
   flex-direction: row;
   justify-content: flex-end;
   padding-right: 3px;
+
   p {
     font-size: 14px;
     text-shadow: 0.1vh 0.1vh 0 rgba(0, 0, 0, 0.7);
   }
 }
 
+
 .tooltip-wrapper {
   pointer-events: none;
   display: flex;
-  background-color: $mainColor;
+  background-color: rgba(15, 15, 15, 0.98);
   width: 200px;
-  padding: 8px;
+  padding: 10px;
   flex-direction: column;
   min-width: 200px;
-  color: $textColor;
+  color: white;
   font-family: $mainFont;
-  border-radius: 4px;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: inset;
-  border-width: 1px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+
   p {
     font-size: 12px;
     font-weight: 400;
@@ -408,6 +419,7 @@ button:active {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
   p {
     font-size: 15px;
     font-weight: 400;
@@ -419,9 +431,11 @@ button:active {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
   svg {
     padding-right: 3px;
   }
+
   p {
     font-size: 14px;
   }
@@ -435,6 +449,7 @@ button:active {
   display: flex;
   flex-direction: row;
   align-items: center;
+
   img {
     width: 28px;
     height: 28px;
@@ -451,6 +466,11 @@ button:active {
   width: 100%;
   position: absolute;
   bottom: 2vh;
+
+  .inventory-slot {
+    width: $gridSize;
+    height: $gridSize;
+  }
 }
 
 .hotbar-item-slot {
@@ -489,6 +509,7 @@ button:active {
   border-top-left-radius: 0.25vh;
   border-top-right-radius: 0.25vh;
   font-family: $mainFont;
+
   p {
     font-size: 11px;
     padding: 2px;
@@ -535,7 +556,7 @@ button:active {
 }
 
 .transition-slide-up-enter {
-  transform: translateY(200px);
+  transform: translateY(200px)
 }
 
 .transition-slide-up-enter-active {
@@ -550,4 +571,354 @@ button:active {
 .transition-slide-up-exit-active {
   transform: translateY(200px);
   transition: all 200ms;
+}
+
+.inventory-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: fit-content;
+  position: relative;
+}
+
+.header-cards {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.header-card {
+  background: rgba(18, 18, 18, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(35, 35, 35, 0.9);
+  }
+
+  .card-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+    }
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .card-title-centered {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      text-align: center;
+      width: 100%;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+    }
+  }
+}
+
+.inventory-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-quantity-selector {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.header-quantity-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 2px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+  }
+}
+
+.header-quantity-input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  width: 30px;
+  outline: none;
+  font-family: $mainFont;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* Split Dialog */
+.inventory-grid-header-wrapper {
+  background: rgba(20, 20, 20, 0.95);
+  padding: 10px 15px;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0 !important;
+
+  .inventory-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: capitalize;
+  }
+
+  .inventory-weight-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+    }
+
+    .weight-icon {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.inventory-grid-container {
+  padding-right: 1px; // Tiny gap between slots and scrollbar
+  box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+}
+
+.inventory-slot {
+  background-color: rgba(20, 20, 20, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    background-color: rgba(40, 40, 40, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.inventory-wrapper {
+  gap: 40px !important; // More space between left and right
+}
+
+/* Split Dialog */
+.split-dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.split-dialog-container {
+  width: 320px;
+  background: rgba(15, 15, 15, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 8px;
+}
+
+.split-dialog-header {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.split-dialog-item-info {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  margin-bottom: 16px;
+
+  span {
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.split-dialog-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.split-dialog-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 18px;
+  width: 80px;
+  text-align: center;
+  padding: 8px;
+  outline: none;
+
+  &:focus {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+}
+
+.split-dialog-slash {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 18px;
+}
+
+.split-dialog-max {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+}
+
+.split-dialog-slider-container {
+  padding: 0 10px;
+  margin-bottom: 30px;
+}
+
+.split-dialog-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.05);
+  height: 2px;
+  outline: none;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+}
+
+.split-dialog-footer {
+  display: flex;
+  gap: 12px;
+}
+
+.split-dialog-button {
+  flex: 1;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.confirm {
+    background: rgba(255, 255, 255, 0.05);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  &.cancel {
+    color: rgba(255, 255, 255, 0.5);
+
+    &:hover {
+      background: rgba(255, 0, 0, 0.05);
+      border-color: rgba(255, 0, 0, 0.2);
+      color: rgba(255, 100, 100, 0.8);
+    }
+  }
 }

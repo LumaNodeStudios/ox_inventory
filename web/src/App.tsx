@@ -16,6 +16,7 @@ debugData([
   {
     action: 'setupInventory',
     data: {
+      nineHotbar: false,
       leftInventory: {
         id: 'test',
         type: 'player',
@@ -96,12 +97,13 @@ const App: React.FC = () => {
     items: typeof Items;
     leftInventory: Inventory;
     imagepath: string;
-  }>('init', ({ locale, items, leftInventory, imagepath }) => {
+    nineHotbar?: boolean;
+  }>('init', ({ locale, items, leftInventory, imagepath, nineHotbar }) => {
     for (const name in locale) Locale[name] = locale[name];
     for (const name in items) Items[name] = items[name];
 
     setImagePath(imagepath);
-    dispatch(setupInventory({ leftInventory }));
+    dispatch(setupInventory({ leftInventory, nineHotbar }));
   });
 
   fetchNui('uiLoaded', {});

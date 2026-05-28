@@ -49,3 +49,48 @@ RegisterNetEvent('esx_policejob:unrestrain', function()
 	PlayerData.cuffed = false
 	LocalPlayer.state:set('invBusy', PlayerData.cuffed, true)
 end)
+
+function client.getHeaderData()
+    local ESX = exports.es_extended:getSharedObject()
+    local pData = ESX.GetPlayerData()
+    if not pData then return end
+
+    local name = GetPlayerName(PlayerId())
+    if pData.firstName then
+        name = pData.firstName .. " " .. pData.lastName
+    end
+
+    local bank = 0
+    if pData.accounts then
+        for _, account in pairs(pData.accounts) do
+            if account.name == 'bank' then
+                bank = account.money
+                break
+            end
+        end
+    end
+
+    local realTime = lib.callback.await('ox_inventory:getRealTime', 500)
+
+    if not realTime then
+        local days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
+        local months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
+        realTime = {
+            day = days[GetClockDayOfWeek() + 1] or "Monday",
+            month = months[GetClockMonth() + 1] or "January",
+            time = ("%02d:%02d"):format(GetClockHours(), GetClockMinutes())
+        }
+    end
+
+    return {
+        name = name,
+        bank = ("$%s"):format(lib.math.groupdigits(bank)),
+        day = realTime.day,
+        month = realTime.month,
+        time = realTime.time,
+        job = pData.job and pData.job.label or "Unemployed",
+        jobName = pData.job and pData.job.name or "unemployed",
+        gang = "None",
+        gangName = "none"
+    }
+end

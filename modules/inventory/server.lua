@@ -1153,6 +1153,11 @@ function Inventory.AddItem(inv, item, count, metadata, slot, cb)
 	if not toSlot then
 		local items = inv.items
 		slotMetadata, slotCount = Items.Metadata(inv.id, item, metadata and table.clone(metadata) or {}, count)
+		local startSlot = 1
+
+		if inv.player and (GetConvar('inventory:nineHotbar', 'false') == 'true' or GetConvarInt('inventory:nineHotbar', 0) == 1) then
+			startSlot = 10
+		end
 
 		for i = 1, inv.slots do
 			local slotData = items[i]
@@ -1160,7 +1165,7 @@ function Inventory.AddItem(inv, item, count, metadata, slot, cb)
 			if item.stack and slotData ~= nil and slotData.name == item.name and table.matches(slotData.metadata, slotMetadata) then
 				toSlot = i
 				break
-			elseif not item.stack and not slotData then
+			elseif not item.stack and not slotData and i >= startSlot then
 				if not toSlot then toSlot = {} end
 
 				toSlot[#toSlot + 1] = { slot = i, count = slotCount, metadata = slotMetadata }
@@ -1171,7 +1176,7 @@ function Inventory.AddItem(inv, item, count, metadata, slot, cb)
 
 				count -= 1
 				slotMetadata, slotCount = Items.Metadata(inv.id, item, metadata and table.clone(metadata) or {}, count)
-			elseif not toSlot and not slotData then
+			elseif not toSlot and not slotData and i >= startSlot then
 				toSlot = i
 			end
 		end
@@ -2178,8 +2183,13 @@ function Inventory.GetEmptySlot(inv)
 	if not inventory then return end
 
 	local items = inventory.items
+	local startSlot = 1
 
-	for i = 1, inventory.slots do
+	if inventory.player and (GetConvar('inventory:nineHotbar', 'false') == 'true' or GetConvarInt('inventory:nineHotbar', 0) == 1) then
+		startSlot = 10
+	end
+
+	for i = startSlot, inventory.slots do
 		if not items[i] then
 			return i
 		end
@@ -2200,13 +2210,18 @@ function Inventory.GetSlotForItem(inv, itemName, metadata)
 	metadata = assertMetadata(metadata)
 	local items = inventory.items
 	local emptySlot
+	local startSlot = 1
+
+	if inventory.player and (GetConvar('inventory:nineHotbar', 'false') == 'true' or GetConvarInt('inventory:nineHotbar', 0) == 1) then
+		startSlot = 10
+	end
 
 	for i = 1, inventory.slots do
 		local slotData = items[i]
 
 		if item.stack and slotData and slotData.name == item.name and table.matches(slotData.metadata, metadata) then
 			return i
-		elseif not item.stack and not slotData and not emptySlot then
+		elseif not item.stack and not slotData and not emptySlot and i >= startSlot then
 			emptySlot = i
 		end
 	end

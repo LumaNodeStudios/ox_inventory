@@ -6,7 +6,8 @@ import { fetchNui } from '../../utils/fetchNui';
 import { Locale } from '../../store/locale';
 import { isSlotWithItem } from '../../helpers';
 import { setClipboard } from '../../utils/setClipboard';
-import { useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { openSplitDialog } from '../../store/dialog';
 import React from 'react';
 import { Menu, MenuItem } from '../utils/menu/Menu';
 
@@ -36,6 +37,7 @@ interface ButtonWithIndex extends Button {
 interface GroupedButtons extends Array<Group> {}
 
 const InventoryContext: React.FC = () => {
+  const dispatch = useAppDispatch();
   const contextMenu = useAppSelector((state) => state.contextMenu);
   const item = contextMenu.item;
 
@@ -63,6 +65,9 @@ const InventoryContext: React.FC = () => {
         break;
       case 'custom':
         fetchNui('useButton', { id: (data?.id || 0) + 1, slot: item.slot });
+        break;
+      case 'split':
+        dispatch(openSplitDialog(item));
         break;
     }
   };
@@ -95,6 +100,9 @@ const InventoryContext: React.FC = () => {
         <MenuItem onClick={() => handleClick({ action: 'use' })} label={Locale.ui_use || 'Use'} />
         <MenuItem onClick={() => handleClick({ action: 'give' })} label={Locale.ui_give || 'Give'} />
         <MenuItem onClick={() => handleClick({ action: 'drop' })} label={Locale.ui_drop || 'Drop'} />
+        {item && item.count > 1 && (
+          <MenuItem onClick={() => handleClick({ action: 'split' })} label={Locale.ui_split || 'Split'} />
+        )}
         {item && item.metadata?.ammo > 0 && (
           <MenuItem onClick={() => handleClick({ action: 'removeAmmo' })} label={Locale.ui_remove_ammo} />
         )}

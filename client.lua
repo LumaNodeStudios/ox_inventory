@@ -287,6 +287,11 @@ function client.openInventory(inv, data)
     left.groups = PlayerData.groups
 
     SendNUIMessage({
+        action = 'setPlayerData',
+        data = client.getHeaderData()
+    })
+
+    SendNUIMessage({
         action = 'setupInventory',
         data = {
             leftInventory = left,
@@ -872,7 +877,8 @@ local function registerCommands()
 		end
 	})
 
-	for i = 1, 5 do
+	local hotbarSlots = client.nineHotbar and 9 or 5
+	for i = 1, hotbarSlots do
 		lib.addKeybind({
 			name = ('hotkey%s'):format(i),
 			description = locale('use_hotbar', i),
@@ -1209,6 +1215,7 @@ RegisterNetEvent('ox_inventory:setPlayerInventory', function(currentDrops, inven
 	PlayerData.id = cache.playerId
 	PlayerData.source = cache.serverId
     PlayerData.maxWeight = shared.playerweight
+    PlayerData.slots = shared.playerslots
 
 	setmetatable(PlayerData, {
 		__index = function(self, key)
@@ -1345,7 +1352,8 @@ RegisterNetEvent('ox_inventory:setPlayerInventory', function(currentDrops, inven
 				items = PlayerData.inventory,
 				maxWeight = shared.playerweight,
 			},
-			imagepath = client.imagepath
+			imagepath = client.imagepath,
+			nineHotbar = client.nineHotbar
 		}
 	})
 
@@ -1927,4 +1935,41 @@ lib.callback.register('ox_inventory:getVehicleData', function(netid)
 	if entity then
 		return GetEntityModel(entity), GetVehicleClass(entity)
 	end
+end)
+
+RegisterNUICallback('splitItem', function(data, cb)
+    cb(true)
+    local slot, count = data.slot, data.count
+    local item = PlayerData.inventory[slot]
+    if not item or item.count <= 1 then return end
+
+    -- Find first empty slot
+    local toSlot
+    local startSlot = 1
+    if client.nineHotbar then
+        startSlot = 10
+    end
+    for i = startSlot, PlayerData.slots do
+        if not PlayerData.inventory[i] then
+            toSlot = i
+            break
+        end
+    end
+
+    if not toSlot then
+        return lib.notify({ type = 'error', description = locale('inventory_full') })
+    end
+
+    local data = {
+        fromType = 'player',
+        fromSlot = slot,
+        toType = 'player',
+        toSlot = toSlot,
+        count = count
+    }
+
+    local success, response = lib.callback.await('ox_inventory:swapItems', false, data)
+    if success and response then
+        updateInventory(response.items, response.weight)
+    end
 end)

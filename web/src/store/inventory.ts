@@ -28,6 +28,8 @@ const initialState: State = {
   itemAmount: 0,
   shiftPressed: false,
   isBusy: false,
+  nineHotbar: false,
+  inventoryVisible: false,
 };
 
 export const inventorySlice = createSlice({
@@ -62,6 +64,9 @@ export const inventorySlice = createSlice({
 
       container.weight = action.payload;
     },
+    setInventoryVisible: (state, action: PayloadAction<boolean>) => {
+      state.inventoryVisible = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(isPending, (state) => {
@@ -95,6 +100,7 @@ export const {
   stackSlots,
   refreshSlots,
   setContainerWeight,
+  setInventoryVisible,
 } = inventorySlice.actions;
 export const selectLeftInventory = (state: RootState) => state.inventory.leftInventory;
 export const selectRightInventory = (state: RootState) => state.inventory.rightInventory;

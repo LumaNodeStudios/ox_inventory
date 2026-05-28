@@ -32,8 +32,13 @@ const SlotTooltip: React.ForwardRefRenderFunction<
         </div>
       ) : (
         <div style={{ ...style }} className="tooltip-wrapper" ref={ref}>
-          <div className="tooltip-header-wrapper">
-            <p>{item.metadata?.label || itemData.label || item.name}</p>
+          <div className="tooltip-header-wrapper" style={{ alignItems: 'flex-start', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <p style={{ margin: 0 }}>{item.metadata?.label || itemData.label || item.name}</p>
+              <p style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.4)' }}>
+                {item.weight >= 1000 ? (item.weight / 1000).toFixed(2) + 'kg' : item.weight + 'g'}
+              </p>
+            </div>
             {inventoryType === 'crafting' ? (
               <div className="tooltip-crafting-duration">
                 <ClockIcon />

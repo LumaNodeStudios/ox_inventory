@@ -8,6 +8,8 @@ export type State = {
   shiftPressed: boolean;
   isBusy: boolean;
   additionalMetadata: Array<{ metadata: string; value: string }>;
+  nineHotbar?: boolean;
+  inventoryVisible?: boolean;
   history?: {
     leftInventory: Inventory;
     rightInventory: Inventory;

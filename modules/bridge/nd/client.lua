@@ -45,3 +45,32 @@ function client.setPlayerStatus(values)
         status:changeStatus(name, value)
     end
 end
+
+function client.getHeaderData()
+    local player = NDCore.getPlayer()
+    if not player then return end
+
+    local realTime = lib.callback.await('ox_inventory:getRealTime', 500)
+
+    if not realTime then
+        local days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
+        local months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
+        realTime = {
+            day = days[GetClockDayOfWeek() + 1] or "Monday",
+            month = months[GetClockMonth() + 1] or "January",
+            time = ("%02d:%02d"):format(GetClockHours(), GetClockMinutes())
+        }
+    end
+
+    return {
+        name = player.fullname or GetPlayerName(PlayerId()),
+        bank = ("$%s"):format(lib.math.groupdigits(player.bank or 0)),
+        day = realTime.day,
+        month = realTime.month,
+        time = realTime.time,
+        job = player.job or "Unemployed",
+        jobName = player.job and player.job:lower() or "unemployed",
+        gang = "None",
+        gangName = "none"
+    }
+end

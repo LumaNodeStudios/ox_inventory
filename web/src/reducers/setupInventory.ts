@@ -8,9 +8,13 @@ export const setupInventoryReducer: CaseReducer<
   PayloadAction<{
     leftInventory?: Inventory;
     rightInventory?: Inventory;
+    nineHotbar?: boolean;
   }>
 > = (state, action) => {
-  const { leftInventory, rightInventory } = action.payload;
+  const { leftInventory, rightInventory, nineHotbar } = action.payload;
+  if (nineHotbar !== undefined) {
+    state.nineHotbar = nineHotbar;
+  }
   const curTime = Math.floor(Date.now() / 1000);
 
   if (leftInventory)

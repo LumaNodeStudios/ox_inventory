@@ -576,6 +576,14 @@ lib.callback.register('ox_inventory:useItem', function(source, itemName, slot, m
     end
 end)
 
+lib.callback.register('ox_inventory:getRealTime', function(source)
+    return {
+        day = os.date("%A"),
+        month = os.date("%B"),
+        time = os.date("%H:%M")
+    }
+end)
+
 local function conversionScript()
     shared.ready = false
 

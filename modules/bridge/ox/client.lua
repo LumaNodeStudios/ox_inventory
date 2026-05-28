@@ -28,3 +28,31 @@ function client.setPlayerStatus(values)
         player.addStatus(name, value)
     end
 end
+
+function client.getHeaderData()
+    if not player then return end
+
+    local realTime = lib.callback.await('ox_inventory:getRealTime', 500)
+
+    if not realTime then
+        local days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
+        local months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
+        realTime = {
+            day = days[GetClockDayOfWeek() + 1] or "Monday",
+            month = months[GetClockMonth() + 1] or "January",
+            time = ("%02d:%02d"):format(GetClockHours(), GetClockMinutes())
+        }
+    end
+
+    return {
+        name = ("%s %s"):format(player.get('firstName') or "", player.get('lastName') or ""),
+        bank = ("$%s"):format(lib.math.groupdigits(player.getAccount('bank') or 0)),
+        day = realTime.day,
+        month = realTime.month,
+        time = realTime.time,
+        job = player.getGroup('job') or "Unemployed",
+        jobName = player.getGroup('job') or "unemployed",
+        gang = player.getGroup('gang') or "None",
+        gangName = player.getGroup('gang') or "none"
+    }
+end
