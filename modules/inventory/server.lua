@@ -1138,6 +1138,7 @@ function Inventory.AddItem(inv, item, count, metadata, slot, cb)
 
 	local toSlot, slotMetadata, slotCount
 	local success, response = false
+	local invokingResource = server.loglevel > 1 and GetInvokingResource()
 
 	metadata = assertMetadata(metadata)
 
@@ -1186,8 +1187,7 @@ function Inventory.AddItem(inv, item, count, metadata, slot, cb)
 
 	inv.changed = true
 
-	local invokingResource = server.loglevel > 1 and GetInvokingResource()
-	local toSlotType = type(toSlot)
+	 local toSlotType = type(toSlot)
 
 	if toSlotType == 'number' then
 		Inventory.SetSlot(inv, item, slotCount, slotMetadata, toSlot)

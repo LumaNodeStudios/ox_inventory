@@ -30,7 +30,6 @@ local invBusy = true
 
 ---@type boolean?
 local invOpen = false
-local plyState = LocalPlayer.state
 local IsPedCuffed = IsPedCuffed
 local playerPed = cache.ped
 
@@ -39,9 +38,9 @@ lib.onCache('ped', function(ped)
 	Utils.WeaponWheel()
 end)
 
-plyState:set('invBusy', true, true)
-plyState:set('invHotkeys', false, false)
-plyState:set('canUseWeapons', false, false)
+client.player:setr('invBusy', true)
+client.player:set('invHotkeys', false)
+client.player:set('canUseWeapons', false)
 
 local function canOpenInventory()
     if not PlayerData.loaded then
@@ -273,7 +272,7 @@ function client.openInventory(inv, data)
         end
     end
 
-    plyState.invOpen = true
+    client.player:set('invOpen', true)
 
     SetInterval(client.interval, 100)
     SetNuiFocus(true, true)
@@ -335,7 +334,7 @@ exports('openInventory', client.openInventory)
 RegisterNetEvent('ox_inventory:forceOpenInventory', function(left, right)
 	if source == '' then return end
 
-	plyState.invOpen = true
+	client.player:set('invOpen', true)
 
 	SetInterval(client.interval, 100)
 	SetNuiFocus(true, true)
@@ -529,7 +528,7 @@ local function useSlot(slot, noAnim)
 		if data.effect then
 			data:effect({name = item.name, slot = item.slot, metadata = item.metadata})
 		elseif data.weapon then
-			if EnableWeaponWheel or not plyState.canUseWeapons then return end
+			if EnableWeaponWheel or not client.player:get('canUseWeapons') then return end
 
 			if IsCinematicCamRendering() then SetCinematicModeActive(false) end
 
@@ -911,7 +910,7 @@ function client.closeInventory()
 		TriggerServerEvent('ox_inventory:closeInventory')
 
 		currentInventory = defaultInventory
-		plyState.invOpen = false
+		client.player:set('invOpen', false)
 		defaultInventory.coords = nil
 	end
 end
@@ -1132,11 +1131,15 @@ end)
 ---@type function?
 local function setStateBagHandler(stateId)
 	AddStateBagChangeHandler('invOpen', stateId, function(_, _, value)
-		invOpen = value
+		if value ~= nil then
+			invOpen = value
+		end
 	end)
 
 	AddStateBagChangeHandler('invBusy', stateId, function(_, _, value)
-		invBusy = value
+		if value ~= nil then
+			invBusy = value
+		end
 	end)
 
     AddStateBagChangeHandler('canUseWeapons', stateId, function(_, _, value)
@@ -1374,8 +1377,8 @@ RegisterNetEvent('ox_inventory:setPlayerInventory', function(currentDrops, inven
 	client.interval = SetInterval(function()
         local canSteal = canOpenTarget(playerPed)
 
-        if canSteal ~= plyState.canSteal then
-            plyState:set('canSteal', canSteal, true)
+        if canSteal ~= client.player:get('canSteal') then
+            client.player:setr('canSteal', canSteal)
         end
 
 		if invOpen == false then
@@ -1568,7 +1571,7 @@ RegisterNetEvent('ox_inventory:setPlayerInventory', function(currentDrops, inven
 							while IsPedPlantingBomb(playerPed) do Wait(0) end
 
 							TriggerServerEvent('ox_inventory:updateWeapon', 'throw', nil, weapon.slot)
-							plyState:set('invBusy', false, true)
+							client.player:setr('invBusy', false)
 
 							currentWeapon = nil
 
@@ -1584,10 +1587,10 @@ RegisterNetEvent('ox_inventory:setPlayerInventory', function(currentDrops, inven
 		end
 	end)
 
-	plyState:set('invBusy', false, true)
-	plyState:set('invOpen', false, false)
-	plyState:set('invHotkeys', true, false)
-	plyState:set('canUseWeapons', true, false)
+	client.player:setr('invBusy', false)
+	client.player:set('invOpen', false)
+	client.player:set('invHotkeys', true)
+	client.player:set('canUseWeapons', true)
 	collectgarbage('collect')
 end)
 
@@ -1600,7 +1603,7 @@ end)
 RegisterNetEvent('ox_inventory:viewInventory', function(left, right)
 	if source == '' then return end
 
-	plyState.invOpen = true
+	client.player:set('invOpen', true)
 
 	SetInterval(client.interval, 100)
 	SetNuiFocus(true, true)
@@ -1867,6 +1870,10 @@ RegisterNUICallback('swapItems', function(data, cb)
         if weaponSlot and currentWeapon then
             currentWeapon.slot = weaponSlot
         end
+
+		if response then
+			updateInventory(response.items, response.weight)
+		end
 	elseif response then
 		if type(response) == 'table' then
 			SendNUIMessage({ action = 'refreshSlots', data = { items = response } })
